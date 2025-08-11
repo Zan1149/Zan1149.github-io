@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ending · Development</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <button id="soundToggle" class="sound-toggle" aria-pressed="true">🔊 Sound on</button>
+
+<audio id="bgm" preload="auto" loop>
+  <source src="sound/sad.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const bgm = document.getElementById('bgm');
+  const btn = document.getElementById('soundToggle');
+
+  function fadeTo(target, ms=1000, done){
+    const start = bgm.volume ?? 0;
+    const t0 = performance.now();
+    function step(t){
+      const p = Math.min((t - t0) / ms, 1);
+      bgm.volume = start + (target - start) * p;
+      if (p < 1) requestAnimationFrame(step); else done && done();
+    }
+    requestAnimationFrame(step);
+  }
+
+  async function playBGM(){
+    try{
+      bgm.volume = 0;
+      await bgm.play();
+      fadeTo(0.55, 1200); 
+      btn.textContent = 'Sound on';
+      btn.setAttribute('aria-pressed','true');
+    }catch(e){
+      btn.textContent = 'Tap to enable sound';
+      btn.setAttribute('aria-pressed','false');
+    }
+  }
+
+  window.addEventListener('load', playBGM);
+
+  btn.addEventListener('click', async ()=>{
+    if (bgm.paused){
+      await playBGM();
+    }else{
+      fadeTo(0, 500, ()=> bgm.pause());
+      btn.textContent = 'Sound off';
+      btn.setAttribute('aria-pressed','false');
+    }
+  });
+</script>
+
+  
+    <div class="card">
+    <h2>Ending · Development</h2>
+    <p>
+      A few days later, the development team arrived on-site. They had a complete plan: preserve one-third of the “representative landscape,” and convert the remaining areas into a “rainforest immersive theme park,” featuring canopy walkways, mist-lit installations, and animal behavior enhancement simulation chambers. “Visitors can climb trees with simulated monkeys and use natural communication devices to ‘listen’ to the waterfall's love poems,” the project manager said with a smile.
+      <br><br>
+      Zora watched as they drove the first signpost into the ground: “Smart Ecological Belt Construction Project: Building a Green Future Together.”
+      <br>At that moment, the rainforest suddenly emitted a strong emotional fluctuation—low-frequency, chaotic, resembling a kind of anger that could not be deciphered by human language. Her receiver automatically shut down, and the system displayed:
+      <br>“Current frequency band language cannot be converted; recommend blocking abnormal frequency bands.”
+      <br><br>
+      Standing at the edge of this “invalid forest,” she recalled the description in the system files: “What kind of forest would agree to be cut down?”
+      <br>But in the end, she silently signed the review document: “Recommend proceeding according to the development plan.”
+      <br><br>
+      Before leaving, she secretly saved a segment of untranslated natural language on her personal terminal. It was the rainforest's final words:
+      <br>“You heard us but chose to listen to other voices.”
+    </p>
+  </div>
+
+
+</body>
+</html>
+

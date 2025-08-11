@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ending · Preserve</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  
+  <button id="soundToggle" class="sound-toggle" aria-pressed="true">🔊 Sound on</button>
+
+<audio id="bgm" preload="auto" loop>
+  <source src="sound/hope.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  const bgm = document.getElementById('bgm');
+  const btn = document.getElementById('soundToggle');
+
+  function fadeTo(target, ms=1400, done){
+    const start = bgm.volume ?? 0;
+    const t0 = performance.now();
+    function step(t){
+      const p = Math.min((t - t0) / ms, 1);
+      bgm.volume = start + (target - start) * p;
+      if (p < 1) requestAnimationFrame(step); else done && done();
+    }
+    requestAnimationFrame(step);
+  }
+
+  async function playBGM(){
+    try{
+      bgm.volume = 0;
+      await bgm.play();
+      fadeTo(0.42, 2000); 
+      btn.textContent = 'Sound on';
+      btn.setAttribute('aria-pressed','true');
+    }catch(e){
+      btn.textContent = 'Tap to enable sound';
+      btn.setAttribute('aria-pressed','false');
+    }
+  }
+
+  window.addEventListener('load', playBGM);
+
+  btn.addEventListener('click', async ()=>{
+    if (bgm.paused){
+      await playBGM();
+    }else{
+      fadeTo(0, 600, ()=> bgm.pause());
+      btn.textContent = 'Sound off';
+      btn.setAttribute('aria-pressed','false');
+    }
+  });
+</script>
+
+  
+    <div class="card">
+    <h2>Ending · Preserve</h2>
+    <p>
+      Zora stared at the review document for a long time. The development plan’s promises of economic growth and tourism revenue weighed heavily against the silent plea she had heard through the receiver.
+      <br><br>
+      At last, she placed the pen down.  
+      “No,” she whispered, signing her name under the rejection clause.
+      <br><br>
+      The team left in frustration, their construction vehicles retreating down the muddy path. With the sound of the engine fading, the rainforest let out a long, deep sound, like a person taking a deep breath after finally showing improvement in their condition after a long illness.
+      <br><br>
+      Her receiver displayed:  
+      “Emotional expression recognized: Relief.”
+      <br><br>
+      In the following weeks, the bio-acoustic diversity readings stabilized, and migratory birds returned. Streams cleared, and the canopy shimmered with new growth.
+    </p>
+  </div>
+</body>
+</html>
